@@ -4,10 +4,12 @@ const tourController = require('../controllers/tourController');
 
 router.param('id', tourController.checkId);
 
+const middleware = tourController.checkBody;
+
 router
   .route('/')
   .get(tourController.getAllTours)
-  .post(tourController.createTour);
+  .post(middleware, tourController.createTour);
 router
   .route('/:id')
   .get(tourController.getTour)
