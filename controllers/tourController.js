@@ -2,7 +2,40 @@ const Tour = require(`${__dirname}/../models/tourModel`);
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    // filtering
+    const queryObj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((el) => delete queryObj[el]);
+
+    // advanced filtering
+    let queryString = JSON.stringify(queryObj);
+    queryString = queryString.replace(
+      /\b(gte|gt|lte|lt)\b/g,
+      (match) => `$${match}`,
+    );
+
+    // build query
+    let query = Tour.find(JSON.parse(queryString));
+
+    // const query = await Tour.find()
+    //   .where('duration')
+    //   .equals(5)
+    //   .where('difficulty')
+    //   .equals('easy');
+
+    // sorting
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+      //sort('price ratingsAverage')
+    } else {
+      query = query.sort('-createdAt');
+    }
+
+    // { difficulty: 'easy', duration: { $gte: '4' } }
+
+    // execute the query
+    const tours = await query;
 
     res.status(200).json({
       status: 'success',
@@ -13,6 +46,7 @@ exports.getAllTours = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: 'failure',
       message: 'Ivalid data set',
