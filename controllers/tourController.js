@@ -63,54 +63,6 @@ class APIFeatures {
 
 exports.getAllTours = async (req, res) => {
   try {
-    // filtering
-    // const queryObj = { ...req.query };
-    // const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    // excludedFields.forEach((el) => delete queryObj[el]);
-
-    // // advanced filtering
-    // let queryString = JSON.stringify(queryObj);
-    // queryString = queryString.replace(
-    //   /\b(gte|gt|lte|lt)\b/g,
-    //   (match) => `$${match}`,
-    // );
-
-    // // build query
-    // let query = Tour.find(JSON.parse(queryString));
-
-    // sorting
-    // if (req.query.sort) {
-    //   const sortBy = req.query.sort.split(',').join(' ');
-    //   query = query.sort(sortBy);
-    //   //sort('price ratingsAverage')
-    // } else {
-    //   query = query.sort('-createdAt');
-    // }
-    // { difficulty: 'easy', duration: { $gte: '4' } }
-
-    // field limiting
-    // if (req.query.fields) {
-    //   const fields = req.query.fields.split(',').join(' ');
-    //   query = query.select(fields);
-    //   //select('name duration difficulty price')
-    // } else {
-    //   // Skip mangoose default fields
-    //   query = query.select('-__v');
-    // }
-
-    // Pagination
-    // const page = req.query.page * 1 || 1;
-    // const limit = req.query.limit * 1 || 100;
-    // const skip = (page - 1) * limit;
-    // query.skip(skip).limit(limit);
-
-    // if (req.query.page) {
-    //   const numOfTours = await Tour.countDocuments();
-    //   if (skip >= numOfTours) {
-    //     throw new Error("This page doesn't exists");
-    //   }
-    // }
-
     // execute the query
     const features = new APIFeatures(Tour.find(), req.query)
       .filter()
