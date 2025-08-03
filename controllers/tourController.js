@@ -64,7 +64,7 @@ exports.createTour = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'failure',
-      message: 'Ivalid data sent',
+      message: err,
     });
   }
 };
@@ -109,7 +109,7 @@ exports.getTourStats = async (req, res) => {
   try {
     const stats = await Tour.aggregate([
       {
-        $match: { ratingsAverage: { $gte: 4.5 } },
+        $match: { ratingsAverage: { $gte: 4 } },
       },
       {
         $group: {
