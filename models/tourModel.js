@@ -11,7 +11,12 @@ const tourSchema = new mongoose.Schema(
       trim: true,
       maxlength: [40, 'Max char limit reached on name field (40)'],
       minlength: [10, 'Min 10 char required on the name field'],
-      validate: [validator.isAlpha, 'Name should only have alphabets'],
+      validate: {
+        validator: function (val) {
+          return val.match(/^[A-Za-z ]+$/);
+        },
+        message: 'Name should only have alphabets',
+      },
     },
     slug: {
       type: String,
