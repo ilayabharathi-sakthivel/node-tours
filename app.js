@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const appError = require('./utils/appError');
 const GlobalErrorHandler = require('./controllers/errorController');
@@ -12,6 +13,14 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
